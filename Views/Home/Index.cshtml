@@ -1,0 +1,251 @@
+@{
+    ViewData["Title"] = "Campus Placement Portal";
+}
+
+<!-- Hero Section -->
+<div class="theme-hero mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <div class="hero-pill">
+                <i class="bi bi-stars"></i> Campus Recruitment Drive 2026
+            </div>
+            <h1 class="hero-title">
+                Connecting Campus Talent with Global Opportunities
+            </h1>
+            <p class="hero-lead">
+                A modern, transparent placement management ecosystem. Check real-time eligibility, apply for premier career opportunities, and track your recruitment milestones from a single dashboard.
+            </p>
+            <div class="d-flex flex-wrap gap-3 pt-2">
+                <a asp-controller="JobApplications" asp-action="AvailableJobs" class="btn btn-info btn-lg px-4 shadow">
+                    <i class="bi bi-briefcase-fill me-1"></i> Explore Available Jobs
+                </a>
+                <a asp-controller="Account" asp-action="Register" class="btn btn-outline-light btn-lg px-4">
+                    <i class="bi bi-person-plus-fill me-1"></i> Student Registration
+                </a>
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-light btn-lg px-3">
+                    <i class="bi bi-speedometer2 me-1"></i> Admin Portal
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block text-center position-relative">
+            <div class="card border-0 p-4 shadow-lg text-start" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 20px;">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="feature-icon-wrapper mb-0" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold" style="color: var(--theme-brown-dark);">Instant Eligibility Check</h6>
+                        <small class="text-secondary">Automated CGPA & Backlogs</small>
+                    </div>
+                </div>
+                <div class="p-3 mb-3 rounded-3" style="background: var(--theme-blue-subtle); border: 1px solid var(--theme-blue-border);">
+                    <div class="d-flex justify-content-between small fw-bold mb-1">
+                        <span class="text-secondary">Criteria Match</span>
+                        <span style="color: var(--theme-blue);">Verified</span>
+                    </div>
+                    <div class="progress" style="height: 7px;">
+                        <div class="progress-bar" style="width: 100%; background: linear-gradient(90deg, #0284c7, #38bdf8);"></div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center small text-secondary">
+                    <span><i class="bi bi-buildings me-1"></i> Top Tech & Core</span>
+                    <span class="fw-bold" style="color: var(--theme-brown);">Active Drives</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Key Stat Counters -->
+<div class="row g-4 mb-5">
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-box">
+            <div class="stat-box-number text-blue">94%</div>
+            <div class="stat-box-label">Average Placement Rate</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-box">
+            <div class="stat-box-number">50+</div>
+            <div class="stat-box-label">Partner Companies</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-box">
+            <div class="stat-box-number text-blue">18.5 LPA</div>
+            <div class="stat-box-label">Highest Package</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-box">
+            <div class="stat-box-number">100%</div>
+            <div class="stat-box-label">Transparent Pipeline</div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="mb-5">
+    <div class="text-center mb-5">
+        <span class="badge bg-info px-3 py-2 mb-2">Designed for Efficiency</span>
+        <h2 class="fw-bold display-6" style="color: var(--theme-brown-dark);">Everything You Need for Campus Drives</h2>
+        <p class="text-secondary mx-auto" style="max-width: 620px;">
+            Engineered to streamline interactions between graduating students, academic departments, and corporate recruiting partners.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">
+                    <i class="bi bi-cpu-fill"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Smart Eligibility Rule Engine</h4>
+                <p class="text-secondary mb-3">
+                    Automated criteria checks matching student department, minimum CGPA, and maximum backlogs to eliminate disqualified applications before submission.
+                </p>
+                <a asp-controller="JobApplications" asp-action="AvailableJobs" class="fw-bold small text-decoration-none">
+                    Check eligibility rules <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="feature-card">
+                <div class="feature-icon-wrapper icon-brown">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                </div>
+                <h4 class="fw-bold mb-2">One-Click Job Applications</h4>
+                <p class="text-secondary mb-3">
+                    Eligible students apply directly with single-click confirmation. Real-time application updates keep candidates informed across every evaluation stage.
+                </p>
+                <a asp-controller="Account" asp-action="Register" class="fw-bold small text-decoration-none" style="color: var(--theme-brown);">
+                    Register your profile <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+            <div class="feature-card">
+                <div class="feature-icon-wrapper">
+                    <i class="bi bi-graph-up-arrow"></i>
+                </div>
+                <h4 class="fw-bold mb-2">Administrator Command Center</h4>
+                <p class="text-secondary mb-3">
+                    Comprehensive overview with candidate shortlisting, status workflow management, recruiter profiles, and export-ready analytics for placement officers.
+                </p>
+                <a asp-controller="Dashboard" asp-action="Index" class="fw-bold small text-decoration-none">
+                    View dashboard metrics <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Process / How it Works -->
+<div class="card border-0 p-4 p-md-5 mb-5 shadow-sm" style="background: linear-gradient(135deg, rgba(224, 242, 254, 0.45) 0%, rgba(251, 247, 243, 0.75) 100%);">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-5">
+            <span class="badge bg-secondary px-3 py-2 mb-2">Simple Workflow</span>
+            <h3 class="fw-bold mb-3" style="color: var(--theme-brown-dark);">How the Placement Process Works</h3>
+            <p class="text-secondary mb-4">
+                Four simple steps ensure an efficient and transparent placement journey from registration to final selection.
+            </p>
+            <div class="d-flex flex-column gap-3">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 34px; height: 34px; background: var(--theme-brown); flex-shrink: 0;">1</div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Verify Registration</h6>
+                        <small class="text-secondary">Register with your college enrollment and pre-verified academic records.</small>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 34px; height: 34px; background: var(--theme-blue); flex-shrink: 0;">2</div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Discover Opportunities</h6>
+                        <small class="text-secondary">Browse live drives from verified hiring partners matching your branch.</small>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 34px; height: 34px; background: var(--theme-brown); flex-shrink: 0;">3</div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Apply with Confirmation</h6>
+                        <small class="text-secondary">Verify minimum CGPA & backlog thresholds, then submit with one click.</small>
+                    </div>
+                </div>
+                <div class="d-flex align-items-start gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 34px; height: 34px; background: var(--theme-blue); flex-shrink: 0;">4</div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Track Selection Stages</h6>
+                        <small class="text-secondary">Monitor status updates (Under Review, Shortlisted, Selected, Rejected).</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="bg-white p-4 rounded-4 shadow-sm border" style="border-color: rgba(104, 65, 38, 0.12) !important;">
+                <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
+                    <div>
+                        <span class="badge bg-info mb-1">Featured Openings</span>
+                        <h5 class="fw-bold mb-0" style="color: var(--theme-brown-dark);">Live Campus Positions</h5>
+                    </div>
+                    <a asp-controller="JobApplications" asp-action="AvailableJobs" class="btn btn-sm btn-outline-primary">
+                        View All Openings
+                    </a>
+                </div>
+                
+                <div class="d-flex flex-column gap-3">
+                    <div class="p-3 rounded-3 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: var(--theme-blue-subtle); border-left: 4px solid var(--theme-blue);">
+                        <div>
+                            <h6 class="fw-bold mb-0">Software Engineer (Cloud & AI)</h6>
+                            <small class="text-secondary">Computer Science, IT • Min CGPA: 7.50</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-success">Active</span>
+                            <div class="small fw-bold text-success mt-1">12.00 LPA</div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded-3 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: var(--theme-brown-subtle); border-left: 4px solid var(--theme-brown);">
+                        <div>
+                            <h6 class="fw-bold mb-0">Associate Technical Consultant</h6>
+                            <small class="text-secondary">All Engineering Departments • Min CGPA: 7.00</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-success">Active</span>
+                            <div class="small fw-bold text-success mt-1">9.50 LPA</div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded-3 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: var(--theme-blue-subtle); border-left: 4px solid var(--theme-blue);">
+                        <div>
+                            <h6 class="fw-bold mb-0">Data & Analytics Associate</h6>
+                            <small class="text-secondary">CS, IT, Electronics • Min CGPA: 7.20</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-success">Active</span>
+                            <div class="small fw-bold text-success mt-1">10.50 LPA</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Call to Action -->
+<div class="text-center py-4 px-3 rounded-4 mb-3" style="background: linear-gradient(135deg, #684126 0%, #2b1b13 100%); color: #ffffff;">
+    <h3 class="fw-bold text-white mb-2">Ready to Launch Your Professional Career?</h3>
+    <p class="text-light mb-4 mx-auto" style="max-width: 550px;">
+        Log in with your college credentials to explore open drives or register your student profile today.
+    </p>
+    <div class="d-flex justify-content-center flex-wrap gap-3">
+        <a asp-controller="Account" asp-action="Login" class="btn btn-info px-4">
+            <i class="bi bi-box-arrow-in-right me-1"></i> Log In to Portal
+        </a>
+        <a asp-controller="JobApplications" asp-action="AvailableJobs" class="btn btn-outline-light px-4">
+            <i class="bi bi-search me-1"></i> Browse Jobs
+        </a>
+    </div>
+</div>

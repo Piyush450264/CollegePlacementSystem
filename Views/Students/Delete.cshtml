@@ -1,0 +1,41 @@
+
+@model CollegePlacementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Delete Student";
+}
+
+<div class="container py-4">
+    <h1 class="fw-bold text-danger">Delete Student</h1>
+
+    <div class="alert alert-warning">
+        Are you sure you want to delete this student?
+        This action cannot be undone.
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h4>@Model.FullName</h4>
+            <p class="text-secondary mb-1">@Model.Email</p>
+            <p>Enrollment: @Model.EnrollmentNumber</p>
+            <p>Department: @Model.Department</p>
+            <p>CGPA: @Model.CGPA.ToString("0.00")</p>
+
+            <form asp-action="Delete"
+                  asp-route-id="@Model.StudentId"
+                  method="post">
+
+                <input type="hidden" asp-for="StudentId" />
+
+                <button type="submit" class="btn btn-danger">
+                    Confirm Delete
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

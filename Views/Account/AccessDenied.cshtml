@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="container py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card border-0 shadow-lg p-4 p-md-5">
+                <div class="brand-icon-box mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem; background: var(--theme-danger-bg); border-color: var(--theme-danger-border); color: var(--theme-danger);">
+                    <i class="bi bi-shield-x"></i>
+                </div>
+                <h2 class="fw-bold mb-2" style="color: var(--theme-brown-dark);">Access Restricted</h2>
+                <p class="text-secondary mb-4">
+                    You do not have the required permissions or role privileges to view this section of the placement portal.
+                </p>
+                <div class="d-flex justify-content-center gap-2">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-house me-1"></i> Return Home
+                    </a>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

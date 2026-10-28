@@ -1,0 +1,55 @@
+
+@model CollegePlacementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="btn btn-outline-secondary mb-3">
+        &larr; Back to Students
+    </a>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white p-3">
+            <h3 class="mb-0">Student Details</h3>
+        </div>
+
+        <div class="card-body p-4">
+            <h4>@Model.FullName</h4>
+            <hr />
+
+            <dl class="row">
+                <dt class="col-sm-4">Enrollment Number</dt>
+                <dd class="col-sm-8">@Model.EnrollmentNumber</dd>
+
+                <dt class="col-sm-4">Email</dt>
+                <dd class="col-sm-8">@Model.Email</dd>
+
+                <dt class="col-sm-4">Department</dt>
+                <dd class="col-sm-8">@Model.Department</dd>
+
+                <dt class="col-sm-4">CGPA</dt>
+                <dd class="col-sm-8">@Model.CGPA.ToString("0.00")</dd>
+
+                <dt class="col-sm-4">Active Backlogs</dt>
+                <dd class="col-sm-8">@Model.Backlogs</dd>
+
+                <dt class="col-sm-4">Phone Number</dt>
+                <dd class="col-sm-8">@(Model.PhoneNumber ?? "Not provided")</dd>
+
+                <dt class="col-sm-4">Resume Reference</dt>
+                <dd class="col-sm-8">@(Model.ResumePath ?? "Not provided")</dd>
+
+                <dt class="col-sm-4">Registered On</dt>
+                <dd class="col-sm-8">@Model.CreatedAt.ToString("dd MMM yyyy")</dd>
+            </dl>
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.StudentId"
+               class="btn btn-primary">
+                Edit Student
+            </a>
+        </div>
+    </div>
+</div>

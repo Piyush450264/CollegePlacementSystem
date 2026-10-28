@@ -1,0 +1,36 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error Occurred";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-lg p-4 p-md-5">
+                <div class="brand-icon-box mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.8rem; background: var(--theme-danger-bg); border-color: var(--theme-danger-border); color: var(--theme-danger);">
+                    <i class="bi bi-exclamation-octagon-fill"></i>
+                </div>
+                <h2 class="fw-bold text-center mb-2" style="color: var(--theme-brown-dark);">System Notice</h2>
+                <p class="text-secondary text-center mb-4">An error occurred while processing your request.</p>
+
+                @if (Model.ShowRequestId)
+                {
+                    <div class="p-3 rounded-3 mb-4" style="background: var(--theme-blue-subtle); border: 1px solid var(--theme-blue-border);">
+                        <small class="text-secondary d-block">Request Identifier:</small>
+                        <code class="fw-bold" style="color: var(--theme-blue);">@Model.RequestId</code>
+                    </div>
+                }
+
+                <div class="alert alert-warning small mb-4">
+                    <strong>Development Diagnostics:</strong> If you are running locally, check your local database connection or application secrets.
+                </div>
+
+                <div class="text-center">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-house me-1"></i> Return to Safety (Home)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

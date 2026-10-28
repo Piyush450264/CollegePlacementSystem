@@ -1,0 +1,121 @@
+
+@model CollegePlacementSystem.Models.Job
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Edit Job";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="text-decoration-none">
+        &larr; Back to Jobs
+    </a>
+
+    <h1 class="fw-bold mt-3">Edit Job</h1>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form asp-action="Edit" asp-route-id="@Model.JobId" method="post">
+                <input type="hidden" asp-for="JobId" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="JobTitle" class="form-label"></label>
+                        <input asp-for="JobTitle" class="form-control" />
+                        <span asp-validation-for="JobTitle" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="CompanyId" class="form-label">Company</label>
+                        <select asp-for="CompanyId"
+                                asp-items="(SelectList)ViewBag.Companies"
+                                class="form-select">
+                            <option value="">Select company</option>
+                        </select>
+                        <span asp-validation-for="CompanyId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="EligibleDepartment" class="form-label">
+                            Eligible Department
+                        </label>
+                        <select asp-for="EligibleDepartment" class="form-select">
+                            <option>Computer Science</option>
+                            <option>Information Technology</option>
+                            <option>Mechanical Engineering</option>
+                            <option>Civil Engineering</option>
+                            <option>Electrical Engineering</option>
+                            <option>Electronics Engineering</option>
+                            <option>All Departments</option>
+                        </select>
+                        <span asp-validation-for="EligibleDepartment"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="SalaryPackage" class="form-label">
+                            Salary Package (LPA)
+                        </label>
+                        <input asp-for="SalaryPackage" type="number"
+                               step="0.01" min="0" class="form-control" />
+                        <span asp-validation-for="SalaryPackage"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="MinimumCGPA" class="form-label">
+                            Minimum CGPA
+                        </label>
+                        <input asp-for="MinimumCGPA" type="number"
+                               step="0.01" min="0" max="10" class="form-control" />
+                        <span asp-validation-for="MinimumCGPA"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="MaximumBacklogs" class="form-label">
+                            Maximum Backlogs
+                        </label>
+                        <input asp-for="MaximumBacklogs" type="number"
+                               min="0" max="100" class="form-control" />
+                        <span asp-validation-for="MaximumBacklogs"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ApplicationDeadline" class="form-label">
+                            Application Deadline
+                        </label>
+                        <input asp-for="ApplicationDeadline" type="date"
+                               asp-format="{0:yyyy-MM-dd}" class="form-control" />
+                        <span asp-validation-for="ApplicationDeadline"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" rows="4"
+                                  class="form-control"></textarea>
+                        <span asp-validation-for="Description"
+                              class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

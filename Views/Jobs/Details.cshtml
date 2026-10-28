@@ -1,0 +1,50 @@
+
+@model CollegePlacementSystem.Models.Job
+
+@{
+    ViewData["Title"] = "Job Details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="btn btn-outline-secondary mb-3">
+        &larr; Back to Jobs
+    </a>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white p-3">
+            <h3 class="mb-0">@Model.JobTitle</h3>
+        </div>
+
+        <div class="card-body p-4">
+            <h5>@(Model.Company?.CompanyName ?? "Unknown company")</h5>
+            <hr />
+
+            <dl class="row">
+                <dt class="col-sm-4">Department</dt>
+                <dd class="col-sm-8">@Model.EligibleDepartment</dd>
+
+                <dt class="col-sm-4">Minimum CGPA</dt>
+                <dd class="col-sm-8">@Model.MinimumCGPA.ToString("0.00")</dd>
+
+                <dt class="col-sm-4">Maximum Backlogs</dt>
+                <dd class="col-sm-8">@Model.MaximumBacklogs</dd>
+
+                <dt class="col-sm-4">Salary Package</dt>
+                <dd class="col-sm-8">@Model.SalaryPackage.ToString("0.00") LPA</dd>
+
+                <dt class="col-sm-4">Application Deadline</dt>
+                <dd class="col-sm-8">
+                    @Model.ApplicationDeadline.ToString("dd MMM yyyy")
+                </dd>
+
+                <dt class="col-sm-4">Description</dt>
+                <dd class="col-sm-8">
+                    @(Model.Description ?? "No description provided")
+                </dd>
+            </dl>
+
+            <a asp-action="Edit" asp-route-id="@Model.JobId"
+               class="btn btn-primary">Edit Job</a>
+        </div>
+    </div>
+</div>

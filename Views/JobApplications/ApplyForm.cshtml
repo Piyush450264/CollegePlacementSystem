@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "Apply for Job";
+    var job = ViewBag.Job as CollegePlacementSystem.Models.Job;
+}
+
+<div class="container py-4">
+    @if (job != null)
+    {
+        <div class="mb-3">
+            <a asp-action="AvailableJobs" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Back to Available Jobs
+            </a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-lg">
+                    <div class="card-header bg-primary text-white p-4">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div>
+                                <span class="badge bg-info text-white mb-1">Campus Placement Drive</span>
+                                <h2 class="h3 fw-bold mb-0">Confirm Your Application</h2>
+                            </div>
+                            <div class="brand-icon-box" style="width: 44px; height: 44px; background: rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.4); color: #fff;">
+                                <i class="bi bi-send-check-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-4 p-md-5">
+                        <div class="mb-4">
+                            <h3 class="fw-bold mb-1" style="color: var(--theme-brown-dark);">@job.JobTitle</h3>
+                            <p class="text-secondary fs-6 mb-0">
+                                <i class="bi bi-building me-1 text-primary"></i> Company: <strong>@(job.Company?.CompanyName ?? "N/A")</strong>
+                            </p>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(job.Description))
+                        {
+                            <div class="p-3 rounded-3 mb-4" style="background: var(--theme-blue-subtle); border-left: 4px solid var(--theme-blue);">
+                                <h6 class="fw-bold mb-1" style="color: var(--theme-brown-dark);">Job Description</h6>
+                                <p class="text-secondary small mb-0">@job.Description</p>
+                            </div>
+                        }
+
+                        <h6 class="fw-bold text-uppercase small text-secondary mb-3 letter-spacing-1">Eligibility Criteria & Position Details</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded-3 border" style="background: var(--theme-brown-subtle); border-color: var(--theme-brown-border) !important;">
+                                    <small class="text-muted d-block">Eligible Department</small>
+                                    <span class="fw-bold text-dark">@job.EligibleDepartment</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded-3 border" style="background: var(--theme-blue-subtle); border-color: var(--theme-blue-border) !important;">
+                                    <small class="text-muted d-block">Minimum CGPA Required</small>
+                                    <span class="fw-bold text-primary">@job.MinimumCGPA.ToString("0.00")</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded-3 border" style="background: var(--theme-blue-subtle); border-color: var(--theme-blue-border) !important;">
+                                    <small class="text-muted d-block">Maximum Allowed Backlogs</small>
+                                    <span class="fw-bold text-dark">@job.MaximumBacklogs</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded-3 border" style="background: var(--theme-brown-subtle); border-color: var(--theme-brown-border) !important;">
+                                    <small class="text-muted d-block">Salary Package</small>
+                                    <span class="fw-bold text-success">₹ @job.SalaryPackage.ToString("0.00") LPA</span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="p-3 rounded-3 border bg-light">
+                                    <small class="text-muted d-block">Application Deadline</small>
+                                    <span class="fw-bold text-danger">
+                                        <i class="bi bi-clock-history me-1"></i> @job.ApplicationDeadline.ToString("dd MMMM yyyy")
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info d-flex align-items-center gap-2 mb-4">
+                            <i class="bi bi-info-circle-fill fs-5"></i>
+                            <span class="small">By submitting this application, your verified college academic profile will be shared with the recruiter.</span>
+                        </div>
+
+                        <form asp-controller="JobApplications" asp-action="Apply" method="post" class="d-flex flex-wrap gap-2">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="jobId" value="@job.JobId" />
+
+                            <button type="submit" class="btn btn-primary px-4 py-2">
+                                <i class="bi bi-check2-circle me-1"></i> Confirm & Submit Application
+                            </button>
+
+                            <a asp-action="AvailableJobs" class="btn btn-outline-secondary px-4 py-2">
+                                Cancel
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> Job information could not be loaded. Please return to Available Jobs.
+        </div>
+
+        <a asp-action="AvailableJobs" class="btn btn-primary">
+            <i class="bi bi-arrow-left me-1"></i> Back to Available Jobs
+        </a>
+    }
+</div>

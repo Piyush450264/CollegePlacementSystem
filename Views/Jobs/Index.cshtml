@@ -1,0 +1,88 @@
+@model IEnumerable<CollegePlacementSystem.Models.Job>
+
+@{
+    ViewData["Title"] = "Job Management";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h1 class="fw-bold">Job Management</h1>
+            <p class="text-secondary mb-0">Manage placement opportunities and recruitment drives.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> Add Job
+        </a>
+    </div>
+
+    @if (TempData["Success"] is string success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@success
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["Error"] is string error)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@error
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Department</th>
+                            <th>Min. CGPA</th>
+                            <th>Package</th>
+                            <th>Deadline</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                                No jobs posted yet.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var job in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@job.JobTitle</td>
+                                <td>@(job.Company?.CompanyName ?? "Unknown")</td>
+                                <td><span class="badge bg-info">@job.EligibleDepartment</span></td>
+                                <td><span class="badge bg-secondary">@job.MinimumCGPA.ToString("0.00")</span></td>
+                                <td class="fw-bold text-success">@job.SalaryPackage.ToString("0.00") LPA</td>
+                                <td>@job.ApplicationDeadline.ToString("dd MMM yyyy")</td>
+                                <td>
+                                    <div class="d-flex gap-1 flex-wrap">
+                                        <a asp-action="Details" asp-route-id="@job.JobId"
+                                           class="btn btn-sm btn-outline-secondary">View</a>
+                                        <a asp-action="Edit" asp-route-id="@job.JobId"
+                                           class="btn btn-sm btn-outline-primary">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@job.JobId"
+                                           class="btn btn-sm btn-outline-danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+            <div class="small text-secondary mt-2">Total jobs: @Model.Count()</div>
+        </div>
+    </div>
+</div>

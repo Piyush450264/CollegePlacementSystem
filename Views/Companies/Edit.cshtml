@@ -1,0 +1,98 @@
+
+@model CollegePlacementSystem.Models.Company
+
+@{
+    ViewData["Title"] = "Edit Company";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="text-decoration-none">
+        &larr; Back to Companies
+    </a>
+
+    <h1 class="fw-bold mt-3">Edit Company</h1>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form asp-action="Edit"
+                  asp-route-id="@Model.CompanyId"
+                  method="post">
+
+                <input type="hidden" asp-for="CompanyId" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="CompanyName" class="form-label">
+                            Company Name
+                        </label>
+                        <input asp-for="CompanyName" class="form-control" />
+                        <span asp-validation-for="CompanyName"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Industry" class="form-label">
+                            Industry
+                        </label>
+                        <input asp-for="Industry" class="form-control" />
+                        <span asp-validation-for="Industry"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ContactEmail" class="form-label">
+                            Contact Email
+                        </label>
+                        <input asp-for="ContactEmail" class="form-control" />
+                        <span asp-validation-for="ContactEmail"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ContactPhone" class="form-label">
+                            Contact Phone
+                        </label>
+                        <input asp-for="ContactPhone" class="form-control" />
+                        <span asp-validation-for="ContactPhone"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Website" class="form-label">
+                            Website
+                        </label>
+                        <input asp-for="Website" class="form-control" />
+                        <span asp-validation-for="Website"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Address" class="form-label">
+                            Address
+                        </label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address"
+                              class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        Save Changes
+                    </button>
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

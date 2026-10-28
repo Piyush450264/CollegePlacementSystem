@@ -1,0 +1,51 @@
+
+@model CollegePlacementSystem.Models.Company
+
+@{
+    ViewData["Title"] = "Company Details";
+}
+
+<div class="container py-4">
+    <a asp-action="Index" class="btn btn-outline-secondary mb-3">
+        &larr; Back to Companies
+    </a>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white p-3">
+            <h3 class="mb-0">Company Details</h3>
+        </div>
+
+        <div class="card-body p-4">
+            <h4>@Model.CompanyName</h4>
+            <hr />
+
+            <dl class="row">
+                <dt class="col-sm-4">Industry</dt>
+                <dd class="col-sm-8">@(Model.Industry ?? "—")</dd>
+
+                <dt class="col-sm-4">Contact Email</dt>
+                <dd class="col-sm-8">@(Model.ContactEmail ?? "—")</dd>
+
+                <dt class="col-sm-4">Contact Phone</dt>
+                <dd class="col-sm-8">@(Model.ContactPhone ?? "—")</dd>
+
+                <dt class="col-sm-4">Website</dt>
+                <dd class="col-sm-8">@(Model.Website ?? "—")</dd>
+
+                <dt class="col-sm-4">Address</dt>
+                <dd class="col-sm-8">@(Model.Address ?? "—")</dd>
+
+                <dt class="col-sm-4">Registered On</dt>
+                <dd class="col-sm-8">
+                    @Model.CreatedAt.ToString("dd MMM yyyy")
+                </dd>
+            </dl>
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.CompanyId"
+               class="btn btn-primary">
+                Edit Company
+            </a>
+        </div>
+    </div>
+</div>

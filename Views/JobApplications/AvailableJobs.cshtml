@@ -1,0 +1,221 @@
+@model IEnumerable<CollegePlacementSystem.Models.Job>
+
+@{
+    ViewData["Title"] = "Available Jobs";
+
+    var isStudent = User.IsInRole("Student");
+
+    var jobEligibility = ViewBag.JobEligibility as Dictionary<int, bool>
+        ?? new Dictionary<int, bool>();
+
+    var appliedJobIds = ViewBag.AppliedJobIds as List<int>
+        ?? new List<int>();
+}
+
+<div class="container py-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h1 class="fw-bold mb-1">Available Job Opportunities</h1>
+            <p class="text-secondary mb-0">
+                Review job requirements and verify your eligibility criteria before submitting applications.
+            </p>
+        </div>
+        @if (isStudent)
+        {
+            <a asp-action="MyApplications" class="btn btn-outline-primary">
+                <i class="bi bi-file-earmark-person me-1"></i> My Applications
+            </a>
+        }
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (isStudent)
+    {
+        <div class="card border-0 mb-4 shadow-sm" style="background: linear-gradient(135deg, var(--theme-blue-subtle) 0%, var(--theme-brown-subtle) 100%); border-left: 5px solid var(--theme-blue) !important;">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-person-badge-fill fs-4 text-primary"></i>
+                        <div>
+                            <span class="fw-bold text-dark d-block">Your Verified Academic Profile</span>
+                            <small class="text-secondary">Criteria evaluated automatically against job prerequisites</small>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-info">
+                            <i class="bi bi-mortarboard me-1"></i> Dept: @(ViewBag.StudentDepartment ?? "Not available")
+                        </span>
+                        <span class="badge bg-secondary">
+                            <i class="bi bi-star-fill text-warning me-1"></i> CGPA: @(ViewBag.StudentCGPA ?? "Not available")
+                        </span>
+                        <span class="badge bg-secondary">
+                            <i class="bi bi-journal-x me-1"></i> Backlogs: @(ViewBag.StudentBacklogs ?? "Not available")
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Eligible Department</th>
+                                <th>Min. CGPA</th>
+                                <th>Max Backlogs</th>
+                                <th>Salary (LPA)</th>
+                                <th>Application Deadline</th>
+                                @if (isStudent)
+                                {
+                                    <th>Eligibility</th>
+                                }
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var job in Model)
+                            {
+                                bool alreadyApplied = appliedJobIds.Contains(job.JobId);
+
+                                bool meetsEligibility =
+                                    jobEligibility.TryGetValue(job.JobId, out var eligible)
+                                    && eligible;
+
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold" style="color: var(--theme-brown-dark);">@job.JobTitle</div>
+                                        @if (!string.IsNullOrEmpty(job.Description))
+                                        {
+                                            <small class="text-muted text-truncate d-inline-block" style="max-width: 200px;">@job.Description</small>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <span class="fw-semibold"><i class="bi bi-building me-1 text-secondary"></i>@(job.Company?.CompanyName ?? "N/A")</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-info">@job.EligibleDepartment</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-secondary">@job.MinimumCGPA.ToString("0.00")</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-secondary">@job.MaximumBacklogs</span>
+                                    </td>
+
+                                    <td>
+                                        <strong class="text-success">₹ @job.SalaryPackage.ToString("0.00") LPA</strong>
+                                    </td>
+
+                                    <td>
+                                        <span class="small text-secondary">
+                                            <i class="bi bi-calendar-event me-1"></i>@job.ApplicationDeadline.ToString("dd MMM yyyy")
+                                        </span>
+                                    </td>
+
+                                    @if (isStudent)
+                                    {
+                                        <td>
+                                            @if (alreadyApplied)
+                                            {
+                                                <span class="badge bg-secondary">
+                                                    <i class="bi bi-check2-all me-1"></i> Already Applied
+                                                </span>
+                                            }
+                                            else if (meetsEligibility)
+                                            {
+                                                <span class="badge bg-success">
+                                                    <i class="bi bi-check-circle-fill me-1"></i> Eligible
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-danger">
+                                                    <i class="bi bi-x-circle-fill me-1"></i> Not Eligible
+                                                </span>
+                                            }
+                                        </td>
+                                    }
+
+                                    <td>
+                                        @if (isStudent)
+                                        {
+                                            @if (alreadyApplied)
+                                            {
+                                                <button type="button" class="btn btn-secondary btn-sm" disabled>
+                                                    <i class="bi bi-check"></i> Applied
+                                                </button>
+                                            }
+                                            else if (meetsEligibility)
+                                            {
+                                                <a asp-controller="JobApplications"
+                                                   asp-action="ApplyForm"
+                                                   asp-route-id="@job.JobId"
+                                                   class="btn btn-primary btn-sm">
+                                                    Apply Now <i class="bi bi-arrow-right"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="btn btn-outline-secondary btn-sm" disabled title="You do not meet minimum criteria">
+                                                    Ineligible
+                                                </button>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-secondary small fst-italic">
+                                                Student login required
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0 py-3 text-secondary small">
+                Showing @Model.Count() available job placement listings.
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card border-0 shadow-sm p-5 text-center">
+            <div class="brand-icon-box mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.6rem;">
+                <i class="bi bi-inbox"></i>
+            </div>
+            <h4 class="fw-bold" style="color: var(--theme-brown-dark);">No Active Job Postings</h4>
+            <p class="text-secondary mb-0">
+                There are currently no open recruitment drives available. Check back soon!
+            </p>
+        </div>
+    }
+</div>

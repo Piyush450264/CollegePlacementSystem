@@ -1,0 +1,65 @@
+/* Layout Scoped Styles - CollegePlacementSystem
+   Light Blue & Warm Brown Theme
+*/
+
+a.navbar-brand[b-nxe7ohbdna] {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+a[b-nxe7ohbdna] {
+  color: #0284c7;
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+a:hover[b-nxe7ohbdna] {
+  color: #684126;
+  text-decoration: underline;
+}
+
+.btn-primary[b-nxe7ohbdna] {
+  color: #ffffff;
+  background: linear-gradient(135deg, #684126 0%, #7d4d2c 100%);
+  border-color: #5d381f;
+  box-shadow: 0 4px 12px rgba(104, 65, 38, 0.2);
+}
+
+.btn-primary:hover[b-nxe7ohbdna], .btn-primary:focus[b-nxe7ohbdna], .btn-primary:active[b-nxe7ohbdna] {
+  color: #ffffff;
+  background: linear-gradient(135deg, #57331c 0%, #683d21 100%);
+  border-color: #492a15;
+  box-shadow: 0 6px 16px rgba(104, 65, 38, 0.28);
+}
+
+.nav-pills .nav-link.active[b-nxe7ohbdna], .nav-pills .show > .nav-link[b-nxe7ohbdna] {
+  color: #ffffff;
+  background-color: #684126;
+  border-color: #5d381f;
+}
+
+.border-top[b-nxe7ohbdna] {
+  border-top: 1px solid rgba(104, 65, 38, 0.12) !important;
+}
+
+.border-bottom[b-nxe7ohbdna] {
+  border-bottom: 1px solid rgba(104, 65, 38, 0.1) !important;
+}
+
+.box-shadow[b-nxe7ohbdna] {
+  box-shadow: 0 4px 20px rgba(104, 65, 38, 0.05);
+}
+
+.footer[b-nxe7ohbdna] {
+  position: relative;
+  width: 100%;
+  white-space: normal;
+  line-height: normal;
+  padding: 1.5rem 0;
+  margin-top: 3rem;
+  background: linear-gradient(180deg, rgba(240, 248, 255, 0.6) 0%, rgba(251, 248, 244, 0.9) 100%);
+  border-top: 1px solid rgba(104, 65, 38, 0.12);
+}

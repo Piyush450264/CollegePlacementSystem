@@ -1,0 +1,35 @@
+
+@model CollegePlacementSystem.Models.Job
+
+@{
+    ViewData["Title"] = "Delete Job";
+}
+
+<div class="container py-4">
+    <h1 class="fw-bold text-danger">Delete Job</h1>
+
+    <div class="alert alert-warning">
+        Are you sure you want to delete this job?
+        Jobs with applications cannot be deleted.
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h4>@Model.JobTitle</h4>
+            <p>@(Model.Company?.CompanyName ?? "Unknown company")</p>
+            <p>Package: @Model.SalaryPackage.ToString("0.00") LPA</p>
+            <p>Deadline: @Model.ApplicationDeadline.ToString("dd MMM yyyy")</p>
+
+            <form asp-action="Delete" asp-route-id="@Model.JobId" method="post">
+                <input type="hidden" asp-for="JobId" />
+
+                <button type="submit" class="btn btn-danger">
+                    Confirm Delete
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

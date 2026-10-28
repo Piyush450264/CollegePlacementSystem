@@ -1,0 +1,41 @@
+
+@model CollegePlacementSystem.Models.Company
+
+@{
+    ViewData["Title"] = "Delete Company";
+}
+
+<div class="container py-4">
+    <h1 class="fw-bold text-danger">Delete Company</h1>
+
+    <div class="alert alert-warning">
+        Are you sure you want to delete this company?
+        Companies associated with jobs cannot be deleted.
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h4>@Model.CompanyName</h4>
+            <p class="text-secondary">
+                @(Model.Industry ?? "Industry not specified")
+            </p>
+            <p>@(Model.ContactEmail ?? "No contact email")</p>
+
+            <form asp-action="Delete"
+                  asp-route-id="@Model.CompanyId"
+                  method="post">
+
+                <input type="hidden" asp-for="CompanyId" />
+
+                <button type="submit" class="btn btn-danger">
+                    Confirm Delete
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

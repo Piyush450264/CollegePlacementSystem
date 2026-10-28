@@ -1,0 +1,267 @@
+@model IEnumerable<CollegePlacementSystem.Models.JobApplication>
+
+@{
+    ViewData["Title"] = "Manage Job Applications";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h1 class="fw-bold mb-1">Manage Job Applications</h1>
+            <p class="text-secondary mb-0">
+                Review candidate applications, manage shortlists, and record hiring decisions.
+            </p>
+        </div>
+        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-primary">
+            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+        </a>
+    </div>
+
+    @if (TempData["Success"] is string success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@success
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] is string error)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@error
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-3">
+                    <span class="text-secondary small fw-bold text-uppercase d-block mb-1">Total Submissions</span>
+                    <h2 class="fw-bold mb-0" style="color: var(--theme-brown-dark);">@Model.Count()</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-3">
+                    <span class="text-secondary small fw-bold text-uppercase d-block mb-1">Pending Review</span>
+                    <h2 class="fw-bold text-warning mb-0">
+                        @Model.Count(a => a.Status == "Applied")
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-3">
+                    <span class="text-secondary small fw-bold text-uppercase d-block mb-1">Shortlisted</span>
+                    <h2 class="fw-bold mb-0" style="color: var(--theme-blue);">
+                        @Model.Count(a => a.Status == "Shortlisted")
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-3">
+                    <span class="text-secondary small fw-bold text-uppercase d-block mb-1">Selected</span>
+                    <h2 class="fw-bold text-success mb-0">
+                        @Model.Count(a => a.Status == "Selected")
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <div class="row g-3 mb-3">
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0 text-muted">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text"
+                               id="applicationSearch"
+                               class="form-control border-start-0"
+                               placeholder="Search student, enrollment, job title, or company..." />
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <select id="statusFilter" class="form-select">
+                        <option value="">All Statuses (Show All)</option>
+                        <option value="Applied">Applied / Pending</option>
+                        <option value="Shortlisted">Shortlisted</option>
+                        <option value="Selected">Selected</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="applicationsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Student</th>
+                            <th>Enrollment</th>
+                            <th>Job</th>
+                            <th>Company</th>
+                            <th>Applied On</th>
+                            <th>Current Status</th>
+                            <th style="min-width: 220px;">Update Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-secondary py-5">
+                                    <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                    No applications have been submitted yet.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var application in Model)
+                            {
+                                <tr class="application-row">
+                                    <td>
+                                        <span class="fw-bold" style="color: var(--theme-brown-dark);">
+                                            @(application.Student?.FullName ?? "N/A")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-secondary">
+                                            @(application.Student?.EnrollmentNumber ?? "N/A")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="fw-semibold">@(application.Job?.JobTitle ?? "N/A")</span>
+                                    </td>
+
+                                    <td>
+                                        <i class="bi bi-building text-secondary me-1"></i>
+                                        @(application.Job?.Company?.CompanyName ?? "N/A")
+                                    </td>
+
+                                    <td>
+                                        <span class="small text-secondary">
+                                            @application.AppliedAt.ToString("dd MMM yyyy")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @if (application.Status == "Selected")
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle-fill me-1"></i> Selected
+                                            </span>
+                                        }
+                                        else if (application.Status == "Shortlisted")
+                                        {
+                                            <span class="badge bg-info">
+                                                <i class="bi bi-star-fill me-1"></i> Shortlisted
+                                            </span>
+                                        }
+                                        else if (application.Status == "Rejected")
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="bi bi-x-circle-fill me-1"></i> Rejected
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">
+                                                <i class="bi bi-hourglass-split me-1"></i> Applied
+                                            </span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <form asp-controller="JobApplications"
+                                              asp-action="UpdateStatus"
+                                              method="post"
+                                              class="d-flex gap-2">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@application.ApplicationId" />
+
+                                            <select name="status"
+                                                    class="form-select form-select-sm status-select">
+                                                <option value="Applied"
+                                                        selected="@(application.Status == "Applied")">
+                                                    Applied
+                                                </option>
+                                                <option value="Shortlisted"
+                                                        selected="@(application.Status == "Shortlisted")">
+                                                    Shortlisted
+                                                </option>
+                                                <option value="Selected"
+                                                        selected="@(application.Status == "Selected")">
+                                                    Selected
+                                                </option>
+                                                <option value="Rejected"
+                                                        selected="@(application.Status == "Rejected")">
+                                                    Rejected
+                                                </option>
+                                            </select>
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-primary">
+                                                Save
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-secondary small mt-3">
+                Total records: @Model.Count()
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const searchInput = document.getElementById("applicationSearch");
+        const statusFilter = document.getElementById("statusFilter");
+        const rows = document.querySelectorAll(".application-row");
+
+        function filterApplications() {
+            const search = searchInput.value.toLowerCase().trim();
+            const status = statusFilter.value.toLowerCase();
+
+            rows.forEach(row => {
+                const rowText = row.innerText.toLowerCase();
+                const rowStatus =
+                    row.querySelector(".status-select").value.toLowerCase();
+
+                const matchesSearch = rowText.includes(search);
+                const matchesStatus = !status || rowStatus === status;
+
+                row.style.display =
+                    matchesSearch && matchesStatus ? "" : "none";
+            });
+        }
+
+        searchInput.addEventListener("input", filterApplications);
+        statusFilter.addEventListener("change", filterApplications);
+    </script>
+}

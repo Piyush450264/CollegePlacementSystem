@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CollegePlacementSystem</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CollegePlacementSystem.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <div class="navbar-accent-line"></div>
+        <nav class="navbar navbar-expand-lg app-navbar">
+            <div class="container">
+                <a class="brand-wrapper" asp-area="" asp-controller="Home" asp-action="Index">
+                    <div class="brand-icon-box">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+                    <span class="brand-title">
+                        Placement<span>Portal</span>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="bi bi-list fs-2" style="color: var(--theme-brown);"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto ms-lg-3 my-2 my-lg-0 gap-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house"></i> Home
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="JobApplications" asp-action="AvailableJobs">
+                                <i class="bi bi-briefcase"></i> Available Jobs
+                            </a>
+                        </li>
+
+                        @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="bi bi-speedometer2"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Jobs" asp-action="Index">
+                                    <i class="bi bi-card-checklist"></i> Jobs
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Companies" asp-action="Index">
+                                    <i class="bi bi-building"></i> Companies
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Students" asp-action="Index">
+                                    <i class="bi bi-people"></i> Students
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="JobApplications" asp-action="Index">
+                                    <i class="bi bi-clipboard-data"></i> Applications
+                                </a>
+                            </li>
+                        }
+                        else if (User.Identity?.IsAuthenticated == true && User.IsInRole("Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="JobApplications" asp-action="MyApplications">
+                                    <i class="bi bi-file-earmark-person"></i> My Applications
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="bi bi-speedometer2"></i> Admin Dashboard
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <div class="nav-user-badge">
+                                    <span class="nav-user-avatar">
+                                        @(User.Identity.Name?.Substring(0, 1).ToUpper() ?? "U")
+                                    </span>
+                                    <span>@User.Identity.Name</span>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <span class="badge bg-primary ms-1">Admin</span>
+                                    }
+                                    else if (User.IsInRole("Student"))
+                                    {
+                                        <span class="badge bg-info ms-1">Student</span>
+                                    }
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                        <i class="bi bi-box-arrow-right"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                    <i class="bi bi-box-arrow-in-right"></i> Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary btn-sm" asp-controller="Account" asp-action="Register">
+                                    <i class="bi bi-person-plus"></i> Student Registration
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="main-content py-4">
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <div class="row g-4 justify-content-between">
+                <div class="col-lg-4 col-md-6">
+                    <div class="brand-wrapper mb-3">
+                        <div class="brand-icon-box">
+                            <i class="bi bi-mortarboard-fill"></i>
+                        </div>
+                        <span class="brand-title">
+                            Placement<span>Portal</span>
+                        </span>
+                    </div>
+                    <p class="text-secondary small mb-3">
+                        Empowering students and streamlining campus recruitment with automated eligibility, intelligent job matching, and transparent application tracking.
+                    </p>
+                    <div class="d-flex gap-2">
+                        <span class="badge bg-info">Light Blue & Warm Brown Theme</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-3 col-6">
+                    <h6 class="fw-bold mb-3" style="color: var(--theme-brown-dark);">Navigation</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a class="footer-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a class="footer-link" asp-controller="JobApplications" asp-action="AvailableJobs">Available Jobs</a></li>
+                        <li><a class="footer-link" asp-controller="Account" asp-action="Register">Student Registration</a></li>
+                        <li><a class="footer-link" asp-controller="Account" asp-action="Login">Account Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-6">
+                    <h6 class="fw-bold mb-3" style="color: var(--theme-brown-dark);">Administration</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a class="footer-link" asp-controller="Dashboard" asp-action="Index">Admin Dashboard</a></li>
+                        <li><a class="footer-link" asp-controller="Jobs" asp-action="Index">Job Management</a></li>
+                        <li><a class="footer-link" asp-controller="Students" asp-action="Index">Student Records</a></li>
+                        <li><a class="footer-link" asp-controller="Companies" asp-action="Index">Hiring Partners</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-12">
+                    <h6 class="fw-bold mb-3" style="color: var(--theme-brown-dark);">Placement Cell</h6>
+                    <p class="small text-secondary mb-2">
+                        <i class="bi bi-geo-alt-fill text-primary me-2"></i> Campus Career & Placement Cell
+                    </p>
+                    <p class="small text-secondary mb-2">
+                        <i class="bi bi-envelope-fill text-primary me-2"></i> placements@college.edu
+                    </p>
+                    <p class="small text-secondary mb-0">
+                        <i class="bi bi-clock-fill text-primary me-2"></i> Mon - Fri: 9:00 AM - 5:00 PM
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div>
+                    &copy; 2026 CollegePlacementSystem. All rights reserved.
+                </div>
+                <div class="d-flex gap-3">
+                    <a class="footer-link small" asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+                    <span class="text-muted">|</span>
+                    <a class="footer-link small" asp-controller="Home" asp-action="Index">Placement Portal</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

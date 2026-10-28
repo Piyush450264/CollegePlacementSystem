@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Privacy Policy & Data Guidelines";
+}
+
+<div class="container py-4">
+    <div class="card border-0 shadow-sm p-4 p-md-5">
+        <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+            <div class="brand-icon-box" style="width: 52px; height: 52px; font-size: 1.5rem;">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <div>
+                <h1 class="h2 fw-bold mb-1" style="color: var(--theme-brown-dark);">Placement Data & Privacy Policy</h1>
+                <p class="text-secondary small mb-0">Commitment to student privacy and academic record confidentiality.</p>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column gap-4 text-secondary">
+            <section>
+                <h5 class="fw-bold text-dark mb-2">1. Student Academic Records</h5>
+                <p>
+                    All academic information including CGPA, department enrollment, and backlogs are retrieved securely from college departmental records. This information is utilized solely to assess eligibility against recruiting company requirements.
+                </p>
+            </section>
+
+            <section>
+                <h5 class="fw-bold text-dark mb-2">2. Sharing with Recruiting Partners</h5>
+                <p>
+                    When a student explicitly applies for a job listing, their name, enrollment details, department, verified CGPA, and uploaded resume are shared with the registered recruiter representing that corporate partner.
+                </p>
+            </section>
+
+            <section>
+                <h5 class="fw-bold text-dark mb-2">3. Account Security</h5>
+                <p>
+                    Account access is protected using industry-standard password hashing through ASP.NET Core Identity. Students and staff are advised not to share their login credentials with unauthorized third parties.
+                </p>
+            </section>
+        </div>
+
+        <div class="mt-4 pt-3 border-top">
+            <a asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left me-1"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>

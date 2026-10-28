@@ -1,0 +1,360 @@
+@model CollegePlacementSystem.Models.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var selectionRate = Math.Clamp(Model.SelectionRate, 0, 100);
+}
+
+<style>
+    :root {
+        --dash-ink: #231914;
+        --dash-muted: #6e625a;
+        --dash-border: rgba(104, 65, 38, 0.12);
+        --dash-surface: #ffffff;
+        --dash-bg: #f5f9fc;
+        --dash-primary: #684126;
+        --dash-blue: #0284c7;
+    }
+
+    .placement-dashboard {
+        padding: 20px 0 40px;
+        color: var(--dash-ink);
+    }
+
+    .dashboard-hero {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+        padding: 32px 34px;
+        margin-bottom: 24px;
+        border-radius: 22px;
+        color: #fff;
+        background: linear-gradient(135deg, #2b1b13 0%, #52321c 38%, #684126 65%, #0284c7 100%);
+        box-shadow: 0 16px 36px rgba(104, 65, 38, 0.22);
+    }
+
+    .dashboard-hero::after {
+        content: "";
+        position: absolute;
+        width: 270px;
+        height: 270px;
+        right: -65px;
+        top: -140px;
+        border: 1px solid rgba(224, 242, 254, 0.3);
+        border-radius: 50%;
+        box-shadow: 0 0 0 32px rgba(224, 242, 254, 0.08), 0 0 0 65px rgba(224, 242, 254, 0.05);
+        pointer-events: none;
+    }
+
+    .dashboard-hero-content, .dashboard-date { position: relative; z-index: 1; }
+    .dashboard-eyebrow {
+        display: inline-block;
+        margin-bottom: 9px;
+        color: #e0f2fe;
+        font-size: .75rem;
+        font-weight: 800;
+        letter-spacing: .13em;
+        text-transform: uppercase;
+    }
+    .dashboard-hero h1 { margin: 0 0 8px; font-size: clamp(1.7rem, 3vw, 2.35rem); font-weight: 800; letter-spacing: -.04em; color: #ffffff; }
+    .dashboard-hero p { max-width: 600px; margin: 0; color: #f1f5f9; }
+    .dashboard-date {
+        flex: 0 0 auto;
+        padding: 12px 18px;
+        border: 1px solid rgba(224, 242, 254, 0.4);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.12);
+        font-size: .9rem;
+        font-weight: 650;
+        backdrop-filter: blur(8px);
+        color: #ffffff;
+    }
+
+    .dashboard-section-label {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 28px 0 16px;
+    }
+    .dashboard-section-label h2 { margin: 0; font-size: 1.15rem; font-weight: 800; letter-spacing: -.02em; color: var(--dash-ink); }
+    .dashboard-section-label p { margin: 4px 0 0; color: var(--dash-muted); font-size: .88rem; }
+
+    .metric-card {
+        position: relative;
+        height: 100%;
+        padding: 22px;
+        border: 1px solid var(--dash-border);
+        border-radius: 17px;
+        background: var(--dash-surface);
+        box-shadow: 0 4px 18px rgba(104, 65, 38, 0.04);
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+    .metric-card:hover { transform: translateY(-3px); border-color: #bae6fd; box-shadow: 0 12px 26px rgba(2, 132, 199, 0.1); }
+    .metric-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .metric-label { color: var(--dash-muted); font-size: .88rem; font-weight: 650; }
+    .metric-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 13px;
+        font-size: 1.15rem;
+        font-weight: 800;
+    }
+    .icon-purple { color: #684126; background: #fbf7f3; border: 1px solid #ebdcd0; }
+    .icon-blue { color: #0284c7; background: #e0f2fe; border: 1px solid #bae6fd; }
+    .icon-teal { color: #0f766e; background: #ccfbf1; border: 1px solid #99f6e4; }
+    .icon-orange { color: #b45309; background: #fef3c7; border: 1px solid #fde68a; }
+    .icon-green { color: #16804a; background: #eafaf1; border: 1px solid #bbf7d0; }
+    .icon-red { color: #c13438; background: #fdf2f2; border: 1px solid #fecaca; }
+    .metric-value { margin: 18px 0 10px; font-size: 2.2rem; line-height: 1; font-weight: 850; letter-spacing: -.055em; color: var(--dash-ink); }
+    .metric-link { display: inline-flex; align-items: center; gap: 6px; color: var(--dash-blue); text-decoration: none; font-size: .82rem; font-weight: 750; }
+    .metric-link:hover { color: var(--dash-primary); text-decoration: underline; }
+
+    .dashboard-panel {
+        height: 100%;
+        padding: 24px;
+        border: 1px solid var(--dash-border);
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 4px 18px rgba(104, 65, 38, 0.04);
+    }
+    .panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
+    .panel-heading h2 { margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--dash-ink); }
+    .panel-heading p { margin: 5px 0 0; color: var(--dash-muted); font-size: .85rem; }
+
+    .selection-rate-value { display: flex; align-items: baseline; gap: 7px; margin-bottom: 12px; }
+    .selection-rate-value strong { font-size: 2.5rem; letter-spacing: -.06em; line-height: 1.1; color: var(--dash-ink); }
+    .selection-rate-value span { color: var(--dash-muted); font-size: .88rem; }
+    .rate-track { width: 100%; height: 11px; overflow: hidden; border-radius: 99px; background: #e0f2fe; }
+    .rate-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%); transition: width .25s ease; }
+    .rate-footnote { margin: 12px 0 0; color: var(--dash-muted); font-size: .84rem; }
+    .status-list { display: grid; gap: 14px; }
+    .status-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .status-name { display: inline-flex; align-items: center; gap: 9px; color: #3a4558; font-size: .9rem; font-weight: 650; }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .dot-applied { background: #94a3b8; }
+    .dot-shortlisted { background: #0284c7; }
+    .dot-selected { background: #16804a; }
+    .dot-rejected { background: #c13438; }
+    .status-count { color: var(--dash-ink); font-size: .95rem; font-weight: 800; }
+
+    .quick-action-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        height: 100%;
+        padding: 18px;
+        color: var(--dash-ink);
+        text-decoration: none;
+        border: 1px solid var(--dash-border);
+        border-radius: 15px;
+        background: #fff;
+        transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .quick-action-card:hover { transform: translateY(-2px); color: var(--dash-blue); border-color: #bae6fd; box-shadow: 0 10px 24px rgba(2, 132, 199, 0.08); }
+    .quick-action-icon { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 42px; height: 42px; border-radius: 12px; background: #e0f2fe; color: var(--dash-blue); font-size: 1.15rem; font-weight: 800; }
+    .quick-action-card h3 { margin: 1px 0 5px; font-size: .92rem; font-weight: 800; }
+    .quick-action-card p { margin: 0; color: var(--dash-muted); font-size: .8rem; line-height: 1.45; }
+
+    .applications-panel { padding: 0; overflow: hidden; }
+    .applications-panel .panel-heading { padding: 22px 23px 0; margin-bottom: 16px; }
+    .applications-table { margin: 0; }
+    .applications-table thead th { padding: 13px 20px; border-top: 1px solid #edf0f5; border-bottom: 1px solid #edf0f5; background: linear-gradient(90deg, #f0f7fd 0%, #fcf9f5 100%); color: var(--dash-primary); font-size: .75rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+    .applications-table tbody td { padding: 16px 20px; border-color: #edf2f7; color: #3b4659; font-size: .88rem; vertical-align: middle; }
+    .applications-table tbody tr:last-child td { border-bottom: 0; }
+    .student-name { color: var(--dash-ink); font-weight: 750; }
+    .table-subtext { display: block; margin-top: 3px; color: var(--dash-muted); font-size: .78rem; }
+    .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font-size: .75rem; font-weight: 800; white-space: nowrap; }
+    .status-applied { color: #526174; background: #edf1f6; }
+    .status-shortlisted { color: #0369a1; background: #e0f2fe; border: 1px solid #bae6fd; }
+    .status-selected { color: #166534; background: #eafaf1; border: 1px solid #bbf7d0; }
+    .status-rejected { color: #9f1239; background: #fdf2f2; border: 1px solid #fecaca; }
+    .empty-state { padding: 40px 20px !important; color: var(--dash-muted) !important; text-align: center; }
+    .empty-state-mark { display: block; margin-bottom: 8px; font-size: 1.6rem; }
+
+    @@media (max-width: 767.98px) {
+        .placement-dashboard { padding-top: 18px; }
+        .dashboard-hero { align-items: flex-start; flex-direction: column; padding: 24px; border-radius: 18px; }
+        .dashboard-date { align-self: flex-start; }
+        .dashboard-panel { padding: 18px; }
+        .applications-panel { padding: 0; }
+        .applications-panel .panel-heading { padding: 18px 18px 0; }
+        .applications-table thead th, .applications-table tbody td { padding-right: 14px; padding-left: 14px; }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .metric-card, .quick-action-card, .rate-fill { transition: none; }
+        .metric-card:hover, .quick-action-card:hover { transform: none; }
+    }
+</style>
+
+<div class="container placement-dashboard">
+    <header class="dashboard-hero">
+        <div class="dashboard-hero-content">
+            <span class="dashboard-eyebrow">Placement administration</span>
+            <h1>Welcome to your dashboard</h1>
+            <p>Track student activity, recruiting companies, job opportunities, and placement outcomes from one place.</p>
+        </div>
+        <div class="dashboard-date">&#128197; &nbsp; @DateTime.Today.ToString("ddd, dd MMM yyyy")</div>
+    </header>
+
+    <div class="dashboard-section-label">
+        <div>
+            <h2>Placement overview</h2>
+            <p>A quick snapshot of your placement system.</p>
+        </div>
+    </div>
+
+    <div class="row g-3 g-xl-4">
+        <div class="col-12 col-sm-6 col-xl-4">
+            <section class="metric-card">
+                <div class="metric-top"><span class="metric-label">Total students</span><span class="metric-icon icon-purple">&#128101;</span></div>
+                <div class="metric-value">@Model.TotalStudents</div>
+                <a asp-controller="Students" asp-action="Index" class="metric-link">Manage students <span aria-hidden="true">&#8594;</span></a>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <section class="metric-card">
+                <div class="metric-top"><span class="metric-label">Recruiting companies</span><span class="metric-icon icon-blue">&#127970;</span></div>
+                <div class="metric-value">@Model.TotalCompanies</div>
+                <a asp-controller="Companies" asp-action="Index" class="metric-link">Manage companies <span aria-hidden="true">&#8594;</span></a>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <section class="metric-card">
+                <div class="metric-top"><span class="metric-label">Active jobs</span><span class="metric-icon icon-teal">&#128188;</span></div>
+                <div class="metric-value">@Model.ActiveJobs</div>
+                <a asp-controller="Jobs" asp-action="Index" class="metric-link">Explore job posts <span aria-hidden="true">&#8594;</span></a>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <section class="metric-card">
+                <div class="metric-top"><span class="metric-label">Total applications</span><span class="metric-icon icon-orange">&#128203;</span></div>
+                <div class="metric-value">@Model.TotalApplications</div>
+                <a asp-controller="JobApplications" asp-action="Index" class="metric-link">Review applications <span aria-hidden="true">&#8594;</span></a>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <section class="metric-card">
+                <div class="metric-top"><span class="metric-label">Shortlisted</span><span class="metric-icon icon-blue">&#10003;</span></div>
+                <div class="metric-value">@Model.ShortlistedApplications</div>
+                <a asp-controller="JobApplications" asp-action="Index" class="metric-link">View candidates <span aria-hidden="true">&#8594;</span></a>
+            </section>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-4">
+            <section class="metric-card">
+                <div class="metric-top"><span class="metric-label">Selected</span><span class="metric-icon icon-green">&#127881;</span></div>
+                <div class="metric-value">@Model.SelectedApplications</div>
+                <a asp-controller="JobApplications" asp-action="Index" class="metric-link">View selections <span aria-hidden="true">&#8594;</span></a>
+            </section>
+        </div>
+    </div>
+
+    <div class="dashboard-section-label">
+        <div>
+            <h2>Placement performance</h2>
+            <p>Application outcomes at a glance.</p>
+        </div>
+    </div>
+
+    <div class="row g-3 g-xl-4">
+        <div class="col-12 col-lg-6">
+            <section class="dashboard-panel">
+                <div class="panel-heading">
+                    <div><h2>Selection rate</h2><p>Selected applications as a share of all applications.</p></div>
+                    <span class="metric-icon icon-purple">&#8599;</span>
+                </div>
+                <div class="selection-rate-value"><strong>@Model.SelectionRate.ToString("0.0")%</strong><span>selection rate</span></div>
+                <div class="rate-track" role="progressbar" aria-label="Selection rate" aria-valuenow="@selectionRate.ToString("0")" aria-valuemin="0" aria-valuemax="100">
+                    <div class="rate-fill" style="width: @selectionRate.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%"></div>
+                </div>
+                <p class="rate-footnote">@Model.SelectedApplications selected out of @Model.TotalApplications total applications.</p>
+            </section>
+        </div>
+        <div class="col-12 col-lg-6">
+            <section class="dashboard-panel">
+                <div class="panel-heading"><div><h2>Application status</h2><p>Current breakdown by status.</p></div></div>
+                <div class="status-list">
+                    <div class="status-row"><span class="status-name"><span class="status-dot dot-applied"></span>Applied / pending review</span><span class="status-count">@Model.PendingApplications</span></div>
+                    <div class="status-row"><span class="status-name"><span class="status-dot dot-shortlisted"></span>Shortlisted</span><span class="status-count">@Model.ShortlistedApplications</span></div>
+                    <div class="status-row"><span class="status-name"><span class="status-dot dot-selected"></span>Selected</span><span class="status-count">@Model.SelectedApplications</span></div>
+                    <div class="status-row"><span class="status-name"><span class="status-dot dot-rejected"></span>Rejected</span><span class="status-count">@Model.RejectedApplications</span></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="dashboard-section-label">
+        <div><h2>Quick actions</h2><p>Jump straight to common administrative tasks.</p></div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-md-6 col-xl-3">
+            <a asp-controller="Students" asp-action="Create" class="quick-action-card">
+                <span class="quick-action-icon">&#43;</span><span><h3>Add a student</h3><p>Create a student record and academic profile.</p></span>
+            </a>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <a asp-controller="Companies" asp-action="Create" class="quick-action-card">
+                <span class="quick-action-icon">&#127970;</span><span><h3>Add a company</h3><p>Register a recruiting organization.</p></span>
+            </a>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <a asp-controller="Jobs" asp-action="Create" class="quick-action-card">
+                <span class="quick-action-icon">&#128188;</span><span><h3>Post a job</h3><p>Publish a new placement opportunity.</p></span>
+            </a>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+            <a asp-controller="JobApplications" asp-action="Index" class="quick-action-card">
+                <span class="quick-action-icon">&#128196;</span><span><h3>Review applications</h3><p>Review candidates and their application status.</p></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="dashboard-section-label">
+        <div><h2>Recent applications</h2><p>The five most recently submitted applications.</p></div>
+        <a asp-controller="JobApplications" asp-action="Index" class="btn btn-outline-primary btn-sm">View all applications &#8594;</a>
+    </div>
+
+    <section class="dashboard-panel applications-panel">
+        <div class="table-responsive">
+            <table class="table applications-table">
+                <thead>
+                    <tr><th>Student</th><th>Position</th><th>Company</th><th>Applied on</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    @if (Model.RecentApplications != null && Model.RecentApplications.Any())
+                    {
+                        @foreach (var application in Model.RecentApplications)
+                        {
+                            var statusClass = application.Status switch
+                            {
+                                "Shortlisted" => "status-shortlisted",
+                                "Selected" => "status-selected",
+                                "Rejected" => "status-rejected",
+                                _ => "status-applied"
+                            };
+                            <tr>
+                                <td><span class="student-name">@application.StudentName</span><span class="table-subtext">Application #@application.ApplicationId</span></td>
+                                <td>@application.JobTitle</td>
+                                <td>@application.CompanyName</td>
+                                <td>@application.AppliedAt.ToString("dd MMM yyyy")</td>
+                                <td><span class="status-pill @statusClass">@application.Status</span></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="5" class="empty-state"><span class="empty-state-mark">&#128203;</span><strong>No applications yet</strong><br />New student applications will appear here.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
